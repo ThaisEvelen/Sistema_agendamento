@@ -17,6 +17,7 @@ class DiaBloqueadoService {
 
   // LISTAR TODOS
   Future<List<DiaBloqueado>> listarTodos() async {
+    if (AuthService.demoMode) return [];
     final response = await http.get(
       Uri.parse(baseUrl),
       headers: await _headers(),
@@ -30,6 +31,9 @@ class DiaBloqueadoService {
 
   // BLOQUEAR
   Future<DiaBloqueado> bloquear(DateTime data, String? motivo) async {
+    if (AuthService.demoMode) {
+      return DiaBloqueado(id: 99, data: data, motivo: motivo);
+    }
     final dataFormatada =
         '${data.year}-${data.month.toString().padLeft(2, '0')}-${data.day.toString().padLeft(2, '0')}';
 
@@ -47,6 +51,7 @@ class DiaBloqueadoService {
 
   // DESBLOQUEAR
   Future<void> desbloquear(int id) async {
+    if (AuthService.demoMode) return;
     final response = await http.delete(
       Uri.parse('$baseUrl/$id'),
       headers: await _headers(),

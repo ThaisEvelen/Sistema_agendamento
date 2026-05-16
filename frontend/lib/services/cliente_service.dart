@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/cliente.dart';
 import 'auth_service.dart';
+import 'demo_data.dart';
 
 class ClienteService {
   static const String baseUrl = 'http://10.0.2.2:8080/api/clientes';
@@ -17,10 +18,18 @@ class ClienteService {
 
   // LISTAR TODOS (ou buscar por nome)
   Future<List<Cliente>> listar({String? nome}) async {
+    if (AuthService.demoMode) {
+      if (nome != null && nome.isNotEmpty) {
+        final q = nome.toLowerCase();
+        return DemoData.clientes
+            .where((c) => c.nome.toLowerCase().contains(q))
+            .toList();
+      }
+      return DemoData.clientes;
+    }
     final uri = nome != null && nome.isNotEmpty
         ? Uri.parse('$baseUrl?nome=${Uri.encodeComponent(nome)}')
         : Uri.parse(baseUrl);
-
     final response = await http.get(uri, headers: await _headers());
     if (response.statusCode == 200) {
       final List<dynamic> list = jsonDecode(response.body);
@@ -31,6 +40,9 @@ class ClienteService {
 
   // CRIAR
   Future<Cliente> criar(String nome, String telefone) async {
+    if (AuthService.demoMode) {
+      return Cliente(id: 99, nome: nome, telefone: telefone);
+    }
     final response = await http.post(
       Uri.parse(baseUrl),
       headers: await _headers(),
@@ -45,6 +57,9 @@ class ClienteService {
 
   // ATUALIZAR
   Future<Cliente> atualizar(int id, String nome, String telefone) async {
+    if (AuthService.demoMode) {
+      return Cliente(id: id, nome: nome, telefone: telefone);
+    }
     final response = await http.put(
       Uri.parse('$baseUrl/$id'),
       headers: await _headers(),
@@ -59,6 +74,7 @@ class ClienteService {
 
   // DELETAR
   Future<void> deletar(int id) async {
+    if (AuthService.demoMode) return;
     final response = await http.delete(
       Uri.parse('$baseUrl/$id'),
       headers: await _headers(),

@@ -17,6 +17,7 @@ class HorarioBloqueadoService {
 
   // LISTAR por data
   Future<List<HorarioBloqueado>> listarPorData(DateTime data) async {
+    if (AuthService.demoMode) return [];
     final dataStr =
         '${data.year}-${data.month.toString().padLeft(2, '0')}-${data.day.toString().padLeft(2, '0')}';
 
@@ -34,6 +35,13 @@ class HorarioBloqueadoService {
   // BLOQUEAR
   Future<HorarioBloqueado> bloquear(
       DateTime data, int hora, String? motivo) async {
+    if (AuthService.demoMode) {
+      return HorarioBloqueado(
+        id: 99, data: data, hora: hora,
+        horaTexto: '${hora.toString().padLeft(2, '0')}:00',
+        motivo: motivo,
+      );
+    }
     final dataStr =
         '${data.year}-${data.month.toString().padLeft(2, '0')}-${data.day.toString().padLeft(2, '0')}';
 
@@ -51,6 +59,7 @@ class HorarioBloqueadoService {
 
   // DESBLOQUEAR
   Future<void> desbloquear(int id) async {
+    if (AuthService.demoMode) return;
     final response = await http.delete(
       Uri.parse('$baseUrl/$id'),
       headers: await _headers(),

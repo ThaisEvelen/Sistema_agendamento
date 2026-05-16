@@ -11,6 +11,10 @@ class AuthService {
   static const String _emailKey = 'email';
   static const String _roleKey = 'role';
 
+  /// True quando o app está rodando em modo demonstração (sem backend).
+  /// Usado pelos serviços para retornar dados falsos em vez de chamar a API.
+  static bool demoMode = false;
+
   // CADASTRO
   Future<void> register(String nome, String email, String senha) async {
     final response = await http.post(
@@ -58,6 +62,7 @@ class AuthService {
     await prefs.setString(_nomeKey, 'Usuário Demo');
     await prefs.setString(_emailKey, 'demo@organizaai.com');
     await prefs.setString(_roleKey, 'ADMIN');
+    demoMode = true;
   }
 
   // LOGOUT
@@ -69,7 +74,9 @@ class AuthService {
   // Verifica se o usuário está logado
   Future<bool> estaLogado() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_tokenKey) != null;
+    final token = prefs.getString(_tokenKey);
+    if (token == 'demo-token') demoMode = true;
+    return token != null;
   }
 
   // Retorna o token salvo
