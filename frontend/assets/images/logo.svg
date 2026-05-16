@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <!-- Gradiente principal roxo → índigo -->
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7C3AED"/>
+      <stop offset="100%" stop-color="#4F46E5"/>
+    </linearGradient>
+
+    <!-- Gradiente sparkle branco → lilás -->
+    <linearGradient id="sparkleGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#C4B5FD"/>
+    </linearGradient>
+
+    <!-- Filtro sombra suave para o calendário -->
+    <filter id="calShadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#3B0764" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <!-- ── Fundo rounded square ── -->
+  <rect width="512" height="512" rx="120" fill="url(#bgGrad)"/>
+
+  <!-- ── Círculo de destaque superior-direito (profundidade) ── -->
+  <circle cx="420" cy="90" r="140" fill="white" opacity="0.07"/>
+  <circle cx="80"  cy="430" r="100" fill="white" opacity="0.05"/>
+
+  <!-- ── Corpo do calendário ── -->
+  <rect x="88" y="148" width="336" height="272"
+        rx="36" fill="white" filter="url(#calShadow)"/>
+
+  <!-- ── Cabeçalho do calendário (fundo roxo escuro) ── -->
+  <rect x="88" y="148" width="336" height="96" rx="36" fill="#6D28D9"/>
+  <!-- Retângulo para achatar borda inferior do header -->
+  <rect x="88" y="208" width="336" height="36" fill="#6D28D9"/>
+
+  <!-- ── Argolas do calendário ── -->
+  <rect x="178" y="104" width="24" height="76" rx="12" fill="white"/>
+  <rect x="310" y="104" width="24" height="76" rx="12" fill="white"/>
+
+  <!-- ── Texto do mês (simulado por linha) ── -->
+  <rect x="148" y="176" width="100" height="14" rx="7" fill="white" opacity="0.45"/>
+
+  <!-- ── Mini indicador "MAI" ── -->
+  <rect x="264" y="176" width="60"  height="14" rx="7" fill="white" opacity="0.25"/>
+
+  <!-- ── Separador header / corpo ── -->
+  <rect x="108" y="244" width="296" height="2" rx="1" fill="#EDE9FE"/>
+
+  <!-- ── Grade de dias (3 cols × 3 rows) ── -->
+  <!-- Row 1 -->
+  <circle cx="172" cy="302" r="18" fill="#7C3AED"/>
+  <circle cx="256" cy="302" r="18" fill="#7C3AED"/>
+  <circle cx="340" cy="302" r="18" fill="#7C3AED"/>
+
+  <!-- Row 2 -->
+  <circle cx="172" cy="360" r="18" fill="#7C3AED" opacity="0.55"/>
+  <circle cx="256" cy="360" r="18" fill="#7C3AED" opacity="0.55"/>
+  <!-- Coluna 3, row 2 = sparkle AI (abaixo) -->
+
+  <!-- Row 3 -->
+  <circle cx="172" cy="378" r="0"/><!-- placeholder -->
+
+  <!-- ── Checkmark (dia confirmado — row 1 col 2 sobrepõe ponto) ── -->
+  <!-- Redesenhado: ponto central virou check -->
+  <circle cx="256" cy="302" r="22" fill="#5B21B6"/>
+  <polyline points="245,302 252,310 268,292"
+            fill="none" stroke="white" stroke-width="7"
+            stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- ── Sparkle / estrela AI (posição col 3, row 2) ── -->
+  <!-- Estrela de 4 pontas -->
+  <path d="M340 337
+           C340 337 344 352 352 360
+           C344 360 340 364 340 383
+           C340 383 336 364 328 360
+           C336 360 340 352 340 337 Z"
+        fill="url(#sparkleGrad)"/>
+  <!-- Braço horizontal -->
+  <path d="M319 360
+           C319 360 334 356 340 360
+           C334 360 319 360 319 360 Z"
+        fill="none"/>
+  <!-- Estrela 4 pontas via path direto -->
+  <path d="
+    M340 330 L345 350 L365 360 L345 370 L340 390 L335 370 L315 360 L335 350 Z
+  " fill="url(#sparkleGrad)" opacity="0.95"/>
+
+  <!-- ── Pequenos brilhos decorativos ── -->
+  <circle cx="400" cy="180" r="6"  fill="white" opacity="0.55"/>
+  <circle cx="415" cy="205" r="3.5" fill="white" opacity="0.35"/>
+  <circle cx="390" cy="215" r="2.5" fill="white" opacity="0.25"/>
+
+  <circle cx="108" cy="420" r="5"  fill="white" opacity="0.35"/>
+  <circle cx="120" cy="440" r="3"  fill="white" opacity="0.22"/>
+</svg>
