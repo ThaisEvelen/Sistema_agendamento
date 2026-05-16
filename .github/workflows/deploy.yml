@@ -21,40 +21,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # 2. Instala o Flutter (último stable, sem travar versão)
+      # 2. Instala o Flutter (último stable)
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
           cache: true
 
-      # 3. Gera ícones placeholder via Python
-      - name: Generate placeholder icons
-        run: |
-          python3 - <<'EOF'
-          import struct, zlib, os
-
-          def make_png(size, color=(124, 58, 237)):
-              def chunk(name, data):
-                  c = zlib.crc32(name + data) & 0xffffffff
-                  return struct.pack('>I', len(data)) + name + data + struct.pack('>I', c)
-              ihdr = struct.pack('>IIBBBBB', size, size, 8, 2, 0, 0, 0)
-              raw = b''.join(b'\x00' + bytes(color) * size for _ in range(size))
-              idat = zlib.compress(raw)
-              return b'\x89PNG\r\n\x1a\n' + chunk(b'IHDR', ihdr) + chunk(b'IDAT', idat) + chunk(b'IEND', b'')
-
-          os.makedirs('web/icons', exist_ok=True)
-          for sz in [192, 512]:
-              data = make_png(sz)
-              open(f'web/icons/Icon-{sz}.png', 'wb').write(data)
-              open(f'web/icons/Icon-maskable-{sz}.png', 'wb').write(data)
-          open('web/favicon.png', 'wb').write(make_png(16))
-          print('Icons gerados com sucesso.')
-          EOF
-
-      # 4. Instala dependências
+      # 3. Instala dependências
       - name: Install dependencies
         run: flutter pub get
+
+      # 4. Habilita suporte a Web e gera a pasta web/ corretamente
+      - name: Enable Flutter Web
+        run: flutter create --platforms=web .
 
       # 5. Build web
       - name: Build web
