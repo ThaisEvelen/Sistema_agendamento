@@ -40,7 +40,12 @@ jobs:
       - name: Build web
         run: flutter build web --release --base-href /Sistema_agendamento/
 
-      # 6. Publica no branch gh-pages
+      # 6. Adiciona .nojekyll para o GitHub Pages não processar com Jekyll
+      #    (sem esse arquivo, o GitHub Pages bloqueia arquivos do Flutter)
+      - name: Add .nojekyll
+        run: touch build/web/.nojekyll
+
+      # 7. Publica no branch gh-pages
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
